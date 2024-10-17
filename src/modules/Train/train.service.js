@@ -4,8 +4,8 @@ import { Train } from './train.model.js';
 import { Station } from '../Station/station.model.js';
 import { User } from '../User/user.model.js';
 
-const createTrainFromDB = async (payload) => {
-  const existingUser = await User.findOne({ _id: payload.createdBy });
+const createTrainFromDB = async (user,payload) => {
+  const existingUser = await User.findOne({ _id: user.userId });
   if (!existingUser) {
     throw new ApiError(httpStatus.CONFLICT, 'User not found!!');
   }

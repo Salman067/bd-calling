@@ -6,7 +6,7 @@ import cron from 'node-cron';
 import { User } from '../User/user.model.js';
 
 const createTrain = catchAsync(async (req, res) => {
-  const result = await TrainServices.createTrainFromDB(req.body);
+  const result = await TrainServices.createTrainFromDB(req.user,req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

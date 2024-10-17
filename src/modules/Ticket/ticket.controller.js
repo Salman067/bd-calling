@@ -16,16 +16,7 @@ const calculateTicketPrice = catchAsync(async (req, res) => {
 });
 
 const purchaseTicket = catchAsync(async (req, res) => {
-  const existingUser = await User.findOne({ _id: req.body.userId });
-  //  if (!existingUser) {
-  //   return sendResponse(res, {
-  //     statusCode: httpStatus.NOT_FOUND,
-  //     success: false,
-  //     message: 'User not found!',
-  //   });
-  // }
-
-  const result = await TicketServices.purchaseTicketFromDB(req.body);
+  const result = await TicketServices.purchaseTicketFromDB(req.user,req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

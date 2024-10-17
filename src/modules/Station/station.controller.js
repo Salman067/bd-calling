@@ -5,17 +5,8 @@ import { StationServices } from './station.service.js';
 import { User } from '../User/user.model.js';
 
 const createStation = catchAsync(async (req, res) => {
-  // const existingUser = await User.findOne({ _id: req.body.createdBy });
 
-  // if (!existingUser) {
-  //   return sendResponse(res, {
-  //     statusCode: httpStatus.NOT_FOUND,
-  //     success: false,
-  //     message: 'User not found!',
-  //   });
-  // }
-
-  const result = await StationServices.createStationFromDB(req.body);
+  const result = await StationServices.createStationFromDB(req.user,req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,

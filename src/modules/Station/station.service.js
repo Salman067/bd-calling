@@ -3,8 +3,8 @@ import ApiError from '../../errors/ApiError.js';
 import { Station } from './station.model.js';
 import { User } from '../User/user.model.js';
 
-const createStationFromDB = async (payload) => {
-  const existingUser = await User.findOne({ _id: payload.createdBy });
+const createStationFromDB = async (user,payload) => {
+  const existingUser = await User.findOne({ _id: user.userId });
   if (!existingUser){
     throw new ApiError(httpStatus.NOT_FOUND,'User not found!')
   }

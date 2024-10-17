@@ -1,17 +1,18 @@
-import httpStatus from 'http-status';
-import catchAsync from '../../helpers/catchAsync.js';
-import sendResponse from '../../helpers/sendResponse.js';
-import {TrainScheduleServices} from './train.schedule.service.js'
-import cron from 'node-cron';
-
+import httpStatus from "http-status";
+import catchAsync from "../../helpers/catchAsync.js";
+import sendResponse from "../../helpers/sendResponse.js";
+import { TrainScheduleServices } from "./train.schedule.service.js";
+import cron from "node-cron";
 
 const addTrainSchedule = catchAsync(async (req, res) => {
-  const result = await TrainScheduleServices.createTrainScheduleFromDB(req.body);
+  const result = await TrainScheduleServices.createTrainScheduleFromDB(
+    req.body
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'Train Schedule created successfully!',
+    message: "Train Schedule created successfully!",
     data: result,
   });
 });
@@ -22,18 +23,20 @@ const getTrainSchedule = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'All train schedule retrieved successfully!',
+    message: "All train schedule retrieved successfully!",
     data: result,
   });
 });
 
 const getSingleTrainSchedule = catchAsync(async (req, res) => {
-  const result = await TrainScheduleServices.getSingleTrainScheduleFromDB(req.params.trainCode);
+  const result = await TrainScheduleServices.getSingleTrainScheduleFromDB(
+    req.params.trainCode
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Train retrieved successfully!',
+    message: "Train retrieved successfully!",
     data: result,
   });
 });
@@ -41,13 +44,13 @@ const getSingleTrainSchedule = catchAsync(async (req, res) => {
 const updateTrainSchedule = catchAsync(async (req, res) => {
   const result = await TrainScheduleServices.updateTrainScheduleFromDB(
     req.params.scheduleId,
-    req.body,
+    req.body
   );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Train updated successfully!',
+    message: "Train updated successfully!",
     data: result,
   });
 });
@@ -64,7 +67,7 @@ const updateTrainSchedule = catchAsync(async (req, res) => {
 // });
 
 export const TrainScheduleControllers = {
-    addTrainSchedule,
+  addTrainSchedule,
   getTrainSchedule,
   getSingleTrainSchedule,
   updateTrainSchedule,

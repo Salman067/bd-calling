@@ -18,8 +18,9 @@ const getWalletByUserIdFromDB = async (userId) => {
   return wallet;
 };
 
-const addFundsToWalletFromDB = async (payload) => {
-  const existingUser= await User.findOne({_id:payload.userId});
+const addFundsToWalletFromDB = async (userId,payload) => {
+  const existingUser= await User.findOne({_id:userId});
+  console.log("sd",existingUser)
   if (!existingUser) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found for this id!');
   }

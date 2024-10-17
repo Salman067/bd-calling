@@ -6,6 +6,7 @@ import config from '../../config/index.js';
 import { Wallet } from '../Wallet/wallet.model.js';
 import createToken from '../../helpers/createToken.js';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 const registerUserFromDB = async (payload) => {
   const session = await mongoose.startSession();
@@ -66,14 +67,15 @@ const loginUserFromDB = async (payload) => {
   const isPasswordValid = await bcrypt.compare(payload?.password, existingUser?.password);
 
   if (!isPasswordValid) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Password');
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid username or password');
   }
 
   const jwtPayload = {
+    userId: existingUser?._id,
+    fullName: existingUser?.fullName,
     email: existingUser?.email,
     role: existingUser?.role,
   };
-
   const accessToken = createToken(jwtPayload, config.jwtAccessSecret, config.jwtAccessExpiresIn);
   return {
     accessToken,

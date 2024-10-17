@@ -1,19 +1,19 @@
 import { Router } from 'express';
 import { WalletControllers } from './wallet.controller.js'; 
 import validateAuth from '../../middlewares/validateAuth.js';
-import USER_ROLE  from '../User/user.constant.js'; 
+import isAdmin from '../../middlewares/isAdmin.js'
 
 const router = Router();
 
 router.get(
   '/',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user),
+  validateAuth(),
   WalletControllers.getWallet
 );
 
 router.post(
   '/add-funds',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user),
+  isAdmin(),
   WalletControllers.addFunds
 );
 

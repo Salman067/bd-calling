@@ -1,28 +1,23 @@
-import { Router } from 'express';
-import { TicketControllers } from './ticket.controller.js';
-import validateAuth from '../../middlewares/validateAuth.js';
-import  USER_ROLE  from '../User/user.constant.js';
-import { Train } from '../Train/train.model.js';
-
+import { Router } from "express";
+import { TicketControllers } from "./ticket.controller.js";
+import isAdmin from "../../middlewares/isAdmin.js";
+import validateAuth from "../../middlewares/validateAuth.js";
 
 const router = Router();
 
-// Get the number of trains between two stations
-router.get('/trains-between-stations', 
-TicketControllers.availableTrainsBetweenStations
+router.get(
+  "/trains-between-stations",
+  validateAuth(),
+  TicketControllers.availableTrainsBetweenStations
 );
-router.post('/calculate-price', TicketControllers.calculateTicketPrice);
-
 router.post(
-  '/purchase',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user),
-  TicketControllers.purchaseTicket,
+  "/calculate-price",
+  validateAuth(),
+  TicketControllers.calculateTicketPrice
 );
 
-router.delete(
-  '/:ticketId',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user), // Uncomment if you want to restrict access based on roles
-  TicketControllers.deleteTicket
-);
+router.post("/purchase", validateAuth(), TicketControllers.purchaseTicket);
+
+router.delete("/:ticketId", isAdmin(), TicketControllers.deleteTicket);
 
 export const TicketRoutes = router;

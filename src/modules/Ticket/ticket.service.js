@@ -38,13 +38,13 @@ const calculateTicketPriceFromDB = async (payload) => {
   return { price };
 };
 
-const purchaseTicketFromDB = async (payload) => {
+const purchaseTicketFromDB = async (user,payload) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
-    const existingUser = await User.findOne({ _id: payload.userId });
+    const existingUser = await User.findOne({ _id: user.userId });
     if (!existingUser) {
       throw new ApiError(httpStatus.NOT_FOUND, "User not found!");
     }

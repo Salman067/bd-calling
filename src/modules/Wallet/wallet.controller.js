@@ -4,15 +4,7 @@ import sendResponse from '../../helpers/sendResponse.js';
 import { WalletServices } from './wallet.service.js'; 
 
 const getWallet = catchAsync(async (req, res) => {
-  // const existingUser= await User.findOne({_id:req.body.userId});
-  // if (!existingUser) {
-  //   return sendResponse(res, {
-  //     statusCode: httpStatus.NOT_FOUND,
-  //     success: false,
-  //     message: 'User not found!',
-  //   });
-  // }
-  const result = await WalletServices.getWalletByUserIdFromDB(req.body.userId);
+  const result = await WalletServices.getWalletByUserIdFromDB(req.user.userId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -22,15 +14,8 @@ const getWallet = catchAsync(async (req, res) => {
 });
 
 const addFunds = catchAsync(async (req, res) => {
-  // const existingUser= await User.findOne({_id:req.body.userId});
-  // if (!existingUser) {
-  //   return sendResponse(res, {
-  //     statusCode: httpStatus.NOT_FOUND,
-  //     success: false,
-  //     message: 'User not found!',
-  //   });
-  // }
-  const result = await WalletServices.addFundsToWalletFromDB(req.body);
+  console.log("jh",req.user)
+  const result = await WalletServices.addFundsToWalletFromDB(req.user.userId,req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

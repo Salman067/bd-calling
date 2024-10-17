@@ -1,21 +1,13 @@
-import { Router } from 'express';
-import { StationControllers } from './station.controller.js';
-import validateAuth from '../../middlewares/validateAuth.js';
-import  USER_ROLE from '../User/user.constant.js';
+import { Router } from "express";
+import { StationControllers } from "./station.controller.js";
+import validateAuth from "../../middlewares/validateAuth.js";
+import isAdmin from "../../middlewares/isAdmin.js";
 
 const router = Router();
 
-router.get('/', StationControllers.getAllStations);
-router.get('/:stationId', StationControllers.getSingleStation);
-router.post(
-  '/create',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user),
-  StationControllers.createStation,
-);
-router.patch(
-  '/update/:stationId',
-  // validateAuth(USER_ROLE.admin, USER_ROLE.user),
-  StationControllers.updateStation,
-);
+router.get("/", validateAuth(), StationControllers.getAllStations);
+router.get("/:stationId", validateAuth(), StationControllers.getSingleStation);
+router.post("/create", isAdmin(), StationControllers.createStation);
+router.patch("/update/:stationId", isAdmin(), StationControllers.updateStation);
 
 export const StationRoutes = router;
