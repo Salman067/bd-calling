@@ -5,7 +5,7 @@ import { Train } from "../Train/train.model.js";
 import { Wallet } from "../Wallet/wallet.model.js";
 import { generateTicketNumber } from "../../helpers/generateTicketNumber.js";
 import { Ticket } from "./ticket.model.js";
-import { User } from '../User/user.model.js';
+import { User } from "../User/user.model.js";
 
 const FARE_PER_STATION = 50;
 
@@ -44,27 +44,44 @@ const purchaseTicketFromDB = async (payload) => {
   try {
     session.startTransaction();
 
-     const existingUser = await User.findOne({_id:payload.userId})
-     if (!existingUser) {
-      throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
+    const existingUser = await User.findOne({ _id: payload.userId });
+    if (!existingUser) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found!");
     }
     const train = await Train.findById(payload.trainId).session(session);
     if (!train) {
       throw new ApiError(httpStatus.NOT_FOUND, "Train not found!");
     }
-    if (typeof train.availableSeats !== 'number' || isNaN(train.availableSeats)) {
-      throw new ApiError(httpStatus.BAD_REQUEST, "Invalid available seats value!");
+    if (
+      typeof train.availableSeats !== "number" ||
+      isNaN(train.availableSeats)
+    ) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "Invalid available seats value!"
+      );
     }
 
-    if (train.availableSeats <= 0 || payload.seatNumber.length>train.availableSeats) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'No available seats on this train!');
+    if (
+      train.availableSeats <= 0 ||
+      payload.seatNumber.length > train.availableSeats
+    ) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "No available seats on this train!"
+      );
     }
 
     const { price } = await calculateTicketPriceFromDB(payload);
 
-    const wallet = await Wallet.findOne({ userId: existingUser._id }).session(session);
+    const wallet = await Wallet.findOne({ userId: existingUser._id }).session(
+      session
+    );
     if (!wallet) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Wallet not found for this user!");
+      throw new ApiError(
+        httpStatus.NOT_FOUND,
+        "Wallet not found for this user!"
+      );
     }
 
     if (wallet.balance < price) {
@@ -80,7 +97,7 @@ const purchaseTicketFromDB = async (payload) => {
     });
     await wallet.save({ session });
 
-    train.availableSeats =  train.availableSeats-payload.seatNumber.length;
+    train.availableSeats = train.availableSeats - payload.seatNumber.length;
     await train.save({ session });
 
     const ticketNumber = generateTicketNumber(
@@ -94,7 +111,7 @@ const purchaseTicketFromDB = async (payload) => {
       price,
       purchaseDate: new Date(),
       ticketNumber,
-      status:'booked',
+      status: "booked",
     };
 
     const result = await Ticket.create([ticketPayload], { session });
@@ -123,12 +140,17 @@ const deleteTicketFromDB = async (ticketId) => {
       throw new ApiError(httpStatus.NOT_FOUND, "Train not found!");
     }
 
-    train.availableSeats += ticket.seatNumber.length; 
+    train.availableSeats += ticket.seatNumber.length;
     await train.save({ session });
 
-    const wallet = await Wallet.findOne({ userId: ticket.userId }).session(session);
+    const wallet = await Wallet.findOne({ userId: ticket.userId }).session(
+      session
+    );
     if (!wallet) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Wallet not found for this user!");
+      throw new ApiError(
+        httpStatus.NOT_FOUND,
+        "Wallet not found for this user!"
+      );
     }
 
     wallet.balance += ticket.price;
@@ -140,12 +162,12 @@ const deleteTicketFromDB = async (ticketId) => {
     });
     await wallet.save({ session });
 
-    ticket.status='cancelled'
-    await ticket.save({ session })
+    ticket.status = "cancelled";
+    await ticket.save({ session });
     await Ticket.findByIdAndDelete(ticketId, { session });
     await session.commitTransaction();
 
-    return ticket; 
+    return ticket;
   } catch (error) {
     await session.abortTransaction();
     throw error;
@@ -154,8 +176,16 @@ const deleteTicketFromDB = async (ticketId) => {
   }
 };
 
+async function availableTrainsBetweenStationsFromDB(fromStation) {
+  return await Train.find({
+    stops: { $elemMatch: { stationCode: fromStation } }
+  });
+}
+
+
 export const TicketServices = {
   calculateTicketPriceFromDB,
   purchaseTicketFromDB,
-  deleteTicketFromDB
+  deleteTicketFromDB,
+  availableTrainsBetweenStationsFromDB,
 };

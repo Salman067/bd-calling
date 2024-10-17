@@ -2,9 +2,15 @@ import { Router } from 'express';
 import { TicketControllers } from './ticket.controller.js';
 import validateAuth from '../../middlewares/validateAuth.js';
 import  USER_ROLE  from '../User/user.constant.js';
+import { Train } from '../Train/train.model.js';
+
 
 const router = Router();
 
+// Get the number of trains between two stations
+router.get('/trains-between-stations', 
+TicketControllers.availableTrainsBetweenStations
+);
 router.post('/calculate-price', TicketControllers.calculateTicketPrice);
 
 router.post(

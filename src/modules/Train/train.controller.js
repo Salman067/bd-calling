@@ -6,16 +6,7 @@ import cron from 'node-cron';
 import { User } from '../User/user.model.js';
 
 const createTrain = catchAsync(async (req, res) => {
-    const existingUser = await User.findOne({ _id: req.body.createdBy });
-    if (!existingUser) {
-      return sendResponse(res, {
-        statusCode: httpStatus.NOT_FOUND,
-        success: false,
-        message: 'User not found!',
-      });
-    }
-  
-  const result = await TrainServices.createTrainFromDB(existingUser, req.body);
+  const result = await TrainServices.createTrainFromDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -62,15 +53,15 @@ const updateTrain = catchAsync(async (req, res) => {
 });
 
 // Schedule the cron job to run every minute
-cron.schedule('* * * * *', async () => {
-  console.log('Running cron job to fetch all trains...');
-  try {
-    const trains = await TrainServices.getAllTrainsFromDB();
-    console.log('Fetched all trains:', trains);
-  } catch (error) {
-    console.error('Error during cron job:', error);
-  }
-});
+// cron.schedule('* * * * *', async () => {
+//   console.log('Running cron job to fetch all trains...');
+//   try {
+//     const trains = await TrainServices.getAllTrainsFromDB();
+//     console.log('Fetched all trains:', trains);
+//   } catch (error) {
+//     console.error('Error during cron job:', error);
+//   }
+// });
 
 export const TrainControllers = {
   createTrain,

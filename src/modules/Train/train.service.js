@@ -2,8 +2,13 @@ import httpStatus from 'http-status';
 import ApiError from '../../errors/ApiError.js';
 import { Train } from './train.model.js'; 
 import { Station } from '../Station/station.model.js';
+import { User } from '../User/user.model.js';
 
-const createTrainFromDB = async (existingUser, payload) => {
+const createTrainFromDB = async (payload) => {
+  const existingUser = await User.findOne({ _id: payload.createdBy });
+  if (!existingUser) {
+    throw new ApiError(httpStatus.CONFLICT, 'User not found!!');
+  }
 
   if (await Train.isTrainExistsByTrainCode(payload.trainCode)) {
     throw new ApiError(httpStatus.CONFLICT, 'Train already exists!');

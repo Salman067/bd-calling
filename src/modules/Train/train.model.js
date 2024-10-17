@@ -43,6 +43,11 @@ const trainSchema = new Schema(
       type: Number,
       required: true,
     },
+    currentStatus: {
+      type: String,
+      enum: ['En route to', 'Completed'],
+      default: 'En route to',
+    },
   },
   { timestamps: true }, 
 );
