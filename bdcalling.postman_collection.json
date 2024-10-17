@@ -205,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"trainName\": \"Kalni Express\",\n    \"trainCode\": \"EXP128\",\n    \"capacity\": 250,\n    \"stops\": [\n        {\n            \"stationCode\": \"ST001\",\n            \"arrivalTime\": \"2024-10-16T08:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T08:45:00.000Z\"\n        },\n        {\n            \"stationCode\": \"ST002\",\n            \"arrivalTime\": \"2024-10-16T09:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T09:45:00.000Z\"\n        },\n        {\n            \"stationCode\": \"ST003\",\n            \"arrivalTime\": \"2024-10-16T10:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T10:45:00.000Z\"\n        }\n    ]\n}",
+							"raw": "{\n    \"trainName\": \"Kalni Express\",\n    \"trainCode\": \"EXP129\",\n    \"capacity\": 250,\n    \"stops\": [\n        {\n            \"stationCode\": \"ST001\",\n            \"arrivalTime\": \"2024-10-16T08:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T08:45:00.000Z\"\n        },\n        {\n            \"stationCode\": \"ST002\",\n            \"arrivalTime\": \"2024-10-16T09:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T09:45:00.000Z\"\n        },\n        {\n            \"stationCode\": \"ST003\",\n            \"arrivalTime\": \"2024-10-16T10:30:00.000Z\",\n            \"departureTime\": \"2024-10-16T10:45:00.000Z\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -357,7 +357,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"stationName\": \"Central Station\",\n    \"location\": \"Downtown City\",\n    \"stationCode\": \"ST005\"\n\n}",
+							"raw": "{\n    \"stationName\": \"Central Station\",\n    \"location\": \"Downtown City\",\n    \"stationCode\": \"ST006\"\n\n}",
 							"options": {
 								"raw": {
 									"language": "json"

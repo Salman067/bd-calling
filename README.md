@@ -145,3 +145,6 @@ Authorization: Bearer <your_jwt_token>
 ## Error Handling
 
 The API uses standard HTTP status codes for error responses. Check the response body for detailed error messages.
+
+## Postman Collection Link
+- https://dark-comet-119144.postman.co/workspace/BLOG_APP~e72bcaec-f773-4ed5-948f-6616bdb439ba/collection/21319108-e1332fb3-290f-4874-925f-ee15b1095fde?action=share&creator=21319108&active-environment=21319108-b38bd898-0285-4dde-b9ca-b291da92df01
